@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
 
 
 def veri_hazirla(dosya_yolu):
@@ -125,3 +126,36 @@ plt.ylabel('Gerçek Durum')
 plt.xlabel('Modelin Tahmini')
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+joblib.dump(rf_model, 'churn_model.pkl')
+joblib.dump(scaler, 'scaler.pkl')
+print("\nModel ve Scaler başarıyla 'churn_model.pkl' olarak kaydedildi!")
+
+
+
+from sklearn.tree import plot_tree
+
+def agaci_ciz(model, sutunlar):
+    plt.figure(figsize=(20, 10))
+    plot_tree(model,
+              feature_names=sutunlar,
+              class_names=['Kalacak', 'Gidecek'],
+              filled=True, rounded=True,
+              max_depth=3)
+    plt.title("Karar Ağacı Mantıksal Akış Şeması")
+    plt.savefig("karar_agaci_akisi.png")
+    plt.show()
+
+agaci_ciz(dt_model, X.columns)
